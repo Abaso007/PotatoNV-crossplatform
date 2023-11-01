@@ -42,7 +42,7 @@ class Fastboot:
 
     def unlock(self, code: str):
         try:
-            response = self.fb_dev.Oem('unlock %s' % code)
+            response = self.fb_dev.Oem(f'unlock {code}')
             print(response)
         except Exception as e:
             handle_exception(e, "Failed to unlock bootloader")

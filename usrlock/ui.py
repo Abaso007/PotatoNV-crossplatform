@@ -23,7 +23,7 @@ def progress(title=None, value=0, max_value=100):
     perc = int(100.0 * value / max_value)
     print(chalk.blue('%s%d%%' % (' ' * (3 - len(str(perc))), perc)), end='')
     if title:
-        print(' %s' % title, end='')
+        print(f' {title}', end='')
     print(end='\r')
     if perc == 100:
         done()

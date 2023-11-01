@@ -21,7 +21,7 @@ from . import ui
 def calc_crc(data, crc=0):
     for char in data:
         crc = ((crc << 8) | char) ^ binascii.crc_hqx(bytes([(crc >> 8) & 0xFF]), 0)
-    for i in range(0,2):
+    for _ in range(0,2):
         crc = ((crc << 8) | 0) ^ binascii.crc_hqx(bytes([(crc >> 8) & 0xFF]), 0)
     return crc & 0xFFFF
 
@@ -95,10 +95,7 @@ class ImageFlasher:
             length -= MAX_DATA_LEN
             ui.progress(value=n, max_value=n_frames)
         if length:
-            if isinstance(data, bytes):
-                f = data[n * MAX_DATA_LEN:]
-            else:
-                f = data.read()
+            f = data[n * MAX_DATA_LEN:] if isinstance(data, bytes) else data.read()
             self.send_data_frame(n + 1, f)
             n += 1
         ui.progress(value=100)
@@ -106,10 +103,7 @@ class ImageFlasher:
         time.sleep(0.5)
 
     def download_from_disk(self, fil, address):
-        if fil == "-":
-            f = sys.stdin
-        else:
-            f = open(fil, "rb")
+        f = sys.stdin if fil == "-" else open(fil, "rb")
         self.send_data(f, os.stat(fil).st_size, address)
 
     def connect_serial(self, device=None):

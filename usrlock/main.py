@@ -60,9 +60,11 @@ def flash_images(data: dict):
     flasher = imageflasher.ImageFlasher()
     flasher.connect_serial()
     for image in data["images"]:
-        ui.progress(title="Flashing {}".format(image['role']))
-        flasher.download_from_disk("./bootloaders/{}/{}"
-                                   .format(data['name'], image['filename']), int(image['address'], 16))
+        ui.progress(title=f"Flashing {image['role']}")
+        flasher.download_from_disk(
+            f"./bootloaders/{data['name']}/{image['filename']}",
+            int(image['address'], 16),
+        )
     ui.success("Bootloader uploaded.")
 
 
